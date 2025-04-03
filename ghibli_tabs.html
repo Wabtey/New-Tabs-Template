@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghibli Tabs</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .date {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .time {
+            position: fixed;
+            bottom: 60px;
+            width: 100%;
+            text-align: center;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="video-background">
+        <video autoplay loop muted id="background-video">
+        </video>
+    </div>
+    <div class="overlay"></div>
+    <div class="content">
+        <div class="time" id="time"></div>
+        <div class="date" id="date"></div>
+    </div>
+
+    <script>
+        // select a random video from the background folder
+        function setRandomBackgroundVideo() {
+            const videos = [
+                './backgrounds/totoro-watching-starry-night-sky-moewalls-com.mp4',
+                './backgrounds/sixth-train-station-spirited-away-moewalls-com.mp4',
+                // 'https://static.moewalls.com/videos/preview/2024/sixth-train-station-spirited-away-preview.webm'
+            ];
+
+            const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+            const videoElement = document.getElementById('background-video');
+            videoElement.src = randomVideo;
+        }
+
+        // update date and time
+        function updateDateTime() {
+            const now = new Date();
+            const timeElement = document.getElementById('time');
+            const dateElement = document.getElementById('date');
+
+            const timeOptions = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            const dateOptions = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+
+            timeElement.textContent = now.toLocaleTimeString('en-US', timeOptions);
+            dateElement.textContent = now.toLocaleDateString('en-US', dateOptions);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setRandomBackgroundVideo();
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        });
+    </script>
+</body>
+
+</html>
